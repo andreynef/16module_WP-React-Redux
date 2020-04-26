@@ -35,13 +35,15 @@ const mapStateToProps = (state) => {//преобразование кучи ст
     textAreaValue:state.form.formText
   }
 }
-//cложная для понимания ибо тройные вызовы и назначения 
 const mapDispatchToProps = (dispatch) => {//имя dispatch вернется как название метода
   return {//возврат обьекта с только методами кот нужны для этого App
     handleDelete: (id) => dispatch(handleDeleteAction(id)),// = const handleDelete = (id)=>{dispatch(obj)} 
     handleChange: (inputValue, textAreaValue)=> dispatch(handleChangeAction(inputValue, textAreaValue)),//метод handleChange в пропсах кот будет запускать dispatch у стора.
-    handleSubmit: (itemsArr, inputValue, textAreaValue) => dispatch(handleSubmitAction(itemsArr, inputValue, textAreaValue)),//берется из /actions
-  }
+    handleSubmit: (itemsArr, inputValue, textAreaValue) => {//либо такая запись
+      let action = handleSubmitAction(itemsArr, inputValue, textAreaValue);
+      dispatch(action);
+      },
+    }
 }
 //сложно
 App = connect(mapStateToProps,mapDispatchToProps)(App);//преобразование в спец контейнерный компонент. Коннектится с хранилищем Redux. Типа эй хранилище, выполни коннект с этими мапоПропсами и передай результат обратно в App в качестае пропсов.
