@@ -1,0 +1,56 @@
+
+.listItem{
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid grey;
+  padding: 5px;
+  position: relative;
+}
+
+.listHeader{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+}
+
+.name{
+  font-weight: bold;
+}
+
+.cross{
+	height: 15px;
+	width: 15px;
+	margin: 0 0 0 50px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-style: none;
+  background-color: transparent;
+  /*background-image: url(./../../../img/clear-button.png);относительная ссылка*/
+  /*background-image: url(/src/img/clear-button.png);абсолютная ссылка*/
+  background-image: url(https://img2.freepng.ru/20180328/toe/kisspng-mitchell-aluminium-american-red-cross-symbol-clip-wrong-5abc6250e6c9b6.5732349715222953769453.jpg);
+  background-size: contain;
+  background-repeat:no-repeat;
+	background-position: center;
+  cursor: pointer;
+
+}
+
+.text{
+  color: grey;
+  font-size: 14px;
+  width: 100%;
+}
+
+.date{
+  display: inline-block;
+  color: grey;
+  font-size: 10px;
+  text-align: end;
+  width: 100%;
+  padding-right: 20px;
+
+}
