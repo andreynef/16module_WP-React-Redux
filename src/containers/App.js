@@ -28,25 +28,25 @@ let App = ({itemsArr, inputValue, textAreaValue, handleDelete, handleChange, han
   )
 }
 
-const mapStateToProps = (state) => {//преобразование кучи стора (в данном случае обьект InitialState) в узкое горлышко нужных пропсов. State = store.getState().
-  return {//возврат обьекта с только необходимыми свойствами
-    itemsArr: state.items,//создаю свой пропс itemsArr равный 
-    inputValue: state.form.formName,
-    textAreaValue:state.form.formText
+const mapStateToProps = (state) => {
+  return {
+    itemsArr: state.items,
+    inputValue: state.form.nameField,
+    textAreaValue:state.form.textField
   }
 }
-const mapDispatchToProps = (dispatch) => {//имя dispatch вернется как название метода
-  return {//возврат обьекта с только методами кот нужны для этого App
-    handleDelete: (id) => dispatch(handleDeleteAction(id)),// = const handleDelete = (id)=>{dispatch(obj)} 
-    handleChange: (inputValue, textAreaValue)=> dispatch(handleChangeAction(inputValue, textAreaValue)),//метод handleChange в пропсах кот будет запускать dispatch у стора.
-    handleSubmit: (itemsArr, inputValue, textAreaValue) => {//либо такая запись
-      let action = handleSubmitAction(itemsArr, inputValue, textAreaValue);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSubmit: (event) => {
+      let action = handleSubmitAction(event);
       dispatch(action);
       },
-    }
+    handleDelete: (id) => dispatch(handleDeleteAction(id)),
+    handleChange: (event)=> dispatch(handleChangeAction(event)),
+  }
 }
 //сложно
-App = connect(mapStateToProps,mapDispatchToProps)(App);//преобразование в спец контейнерный компонент. Коннектится с хранилищем Redux. Типа эй хранилище, выполни коннект с этими мапоПропсами и передай результат обратно в App в качестае пропсов.
+App = connect(mapStateToProps,mapDispatchToProps)(App);
     
 
 export default App

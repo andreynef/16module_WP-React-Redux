@@ -1,11 +1,7 @@
 import React from 'react';
 import './Comment.css'
 
-const Comment = ({name, handleDelete, text, date}) =>{//dumb component
-/* 2 варианта привязки контекста
-<button onClick={(e) => this.deleteRow(id, e)}>Удалить строку</button> 
-<button onClick={this.deleteRow.bind(this, id)}>Удалить строку</button> 
-*/
+const Comment = ({name, handleDelete, text, date, id}) =>{
   return (
     <li 
 			className='listItem'
@@ -13,10 +9,11 @@ const Comment = ({name, handleDelete, text, date}) =>{//dumb component
 			<div className='listHeader'>
 				<div className='name'>{name}</div>
 				<button 
+					id={id}
 					type="button"
 					className='cross'   
 					aria-label="удалить"
-					onClick={handleDelete}
+					onClick={() => handleDelete(id)} // тжсм onClick={handleDelete.bind(this, id)}
 					>
 				</button>
 			</div>

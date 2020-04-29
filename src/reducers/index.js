@@ -1,72 +1,66 @@
 
-const setLocalStorage = (newSet)=>{//создаем метод чтобы не повторяться
+const setLocalStorage = (newSet)=>{
 	localStorage.setItem('commentItems', JSON.stringify(newSet));
 }
 
-const todoReducers = (state = {}, action) => {//ф фильтрующая действия. Ей должны прийти пропсы с массивом state ([] если нет) и объект action.
-	// alert(action)
+const reducer = (state = {}, action) => {
 
-	switch (action.type){//ВАЖНО! Из Reducers нужно возвращать копию стейта (новую базу)
+	switch (action.type){
 
 		case 'HANDLE_SUBMIT':
-			// alert('reducer S')
-			let lastCommentId;
-			if (state.items.length === 0){//если пусто ([]) 
-				lastCommentId = 0;//то установить счетчик на 0
-			} else {
-				lastCommentId = state.items[(state.items.length)-1].id  //определение значения id последнего элемента в массиве. Последний, потому что при удалении серединного элемента при последующих добавлениях может совпасть значение id.
-			}
-			
+			action.event.preventDefault();
 
-			const newText = {
-				id:++lastCommentId,//передача номера id на +1
-				name:state.form.formName,
-				text:state.form.formText,
+			//определение id последнего комментария для корректной работы нумерации следующих комментариев (чтобы не переопределялись)
+			let stateItemsLength = state.items.length;
+			let lastCommentId = stateItemsLength === 0 ? [] : state.items[(state.items.length)-1].id  
+			
+			const newItem = {
+				id:++lastCommentId,
+				name:state.form.nameField,
+				text:state.form.textField,
 				date: new Date().toLocaleString('ru'),
 			};
 
-			const newStateAfterSubmission = {//копия
-				...state,//копирование содержимого - того что было  (тема глубокого и поверхностного копирования)
-				items:[...state.items, newText],//новое вложение, значит снова копирование(...) того что было, иначе это не глубокое копирование и останутся ссылки что НЕЛЬЗЯ делать при иммутабельной концепции реакта.
+			const newStateAfterSubmission = {
+				...state,
+				items:[...state.items, newItem], 
 				form: {
-					formName: '', //обнуление полей. Простые значение не имеют ссылок, так что можно просто писать так.
-					formText: ''
+					nameField: '',
+					textField: ''
 				}
 			}
-			setLocalStorage(newStateAfterSubmission);//записываем новый массив в локал в формате('text','text'), тобишь в формате JSON		
+			
+			setLocalStorage(newStateAfterSubmission);	
 
-			return newStateAfterSubmission//возвращает новый массив с новыми значениями(объектами). (скобки - значит создание нового обьекта. (Тжсм  let a={} return a)
+			return newStateAfterSubmission
 
 		case 'HANDLE_DELETE':
-			// alert('reducer D')
-			const filteredStateItemsArr = state.items.filter(item => item.id !== action.id)//создаем новый отфильтрованный массив (без элемента с нужным id)
-			const newStateAfterDeletion = {//копия
+			const filteredStateItemsArr = state.items.filter(item => item.id !== action.id);
+			const newStateAfterDeletion = {
 				...state,
 				items: filteredStateItemsArr
 			}
 
-			setLocalStorage(newStateAfterDeletion);//записываем новый массив в локал в формате('text','text'), тобишь в формате JSON				
+			setLocalStorage(newStateAfterDeletion);	
 			return newStateAfterDeletion
 		
 		case 'HANDLE_CHANGE':
-			//замудреное обьединение 2 методов как и в Actions
-			const objKey = action.textAreaValue ? 'formText' : 'formName';//условие определяющее какое именно свойство менять
-			const targetValue = action.textAreaValue ? action.textAreaValue : action.inputValue// какую инфу записывать в значение
-
-			const newStateAfterChanging = {//копия
+			const key = action.event.target.name;
+			const value = action.event.target.value
+			const newStateAfterChanging = {
 				...state, 
 				form: {
 					...state.form,
-					[objKey]: targetValue,				
+					[key]: value,				
 				}
 			}
-			setLocalStorage(newStateAfterChanging);//записываем в локал, чтобы при перезагрузке страницы поля оставались заполненными на последнем месте 				
+			setLocalStorage(newStateAfterChanging); 				
 
 			return newStateAfterChanging
 		
-		default://если action.type не совпадает с кейсами то вернуть старый стейт
+		default:
 			return state;
 	}
 }
 
-export default todoReducers;
+export default reducer;

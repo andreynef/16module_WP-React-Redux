@@ -1,30 +1,46 @@
 import React from 'react';
-import Input from './Input/Input.js'
-import TextArea from './TextArea/TextArea.js'
 import './Form.css'
 
-const Form = ({inputValue,textAreaValue,handleSubmit, handleChange}) =>{//dumb component
+const Form = ({inputValue,textAreaValue,handleSubmit, handleChange}) =>{
 
-	// let inputValue = React.createRef();//привяжем к DOM (а не к единственной истине - store)
-	// let textAreaValue = React.createRef();
   return (
 		<form
 			onSubmit={handleSubmit}
+			action="#" 
+			method="post"
 		>
-			<Input
-				handleChange = {handleChange}//отдается через пропсы метод базы
-				inputValue={inputValue} //отдается через пропсы значение базы
-			/>
-			<TextArea 
-				handleChange = {handleChange}//отдается через пропсы метод базы
-				textAreaValue={textAreaValue}//отдается через пропсы значение базы
-			/>
-			<button 
-				type="submit"
+			<label className='label'>*Введите свое имя
+				<input
+					className='input'
+					placeholder="имя"
+					type="text"
+					name='nameField' 
+					onChange={handleChange}
+					value={inputValue}
+					autoFocus
+					required
+				/>
+			</label>
+
+			<label className='label'>*Введите свой комментарий
+				<textarea 
+					className='textArea'
+					name='textField' 
+					type="text" 
+					placeholder='комментарий' 
+					value={textAreaValue}
+					onChange={handleChange}
+					required
+					maxLength = {100}
+					>
+				</textarea>
+			</label>
+			<input 
+				type='submit'
 				className ='button'
+				value ='Добавить комментарий'
 			>
-				Добавить комментарий
-			</button>
+			</input>
 		</form>
   );
 }
