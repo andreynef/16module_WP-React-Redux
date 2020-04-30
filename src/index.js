@@ -7,13 +7,15 @@ import reducer from './reducers';
 
 const localStoredState = JSON.parse(localStorage.getItem('commentItems'));
 
-const initialState = {
-  items: localStoredState.items || [{id:1, name: 'initialMan', text: "i'm first", date: "2000 BC" }],
-	form: { 
-    nameField: '',
-    textField: ''
+const initialState = localStoredState 
+  ? localStoredState 
+  : {
+    items: [{id:1, name: 'initialMan', text: "i'm first", date: "2000 BC" }],
+    form: { 
+      nameField: '',
+      textField: ''
+    }
   }
-}
 
 const store = createStore (reducer, initialState);
 
